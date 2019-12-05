@@ -1,55 +1,85 @@
 (ns chatbot.core
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [clojure.pprint :as p]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
 
-(use 'opennlp.nlp)
-(use 'opennlp.treebank)
 
-(def get-sentences (make-sentence-detector "models/en-sent.bin"))
-(def tokenize (make-tokenizer "models/en-token.bin"))
-(def detokenize (make-detokenizer "models/english-detokenizer.xml"))
-(def pos-tag (make-pos-tagger "models/en-pos-maxent.bin"))
-(def name-find (make-name-finder "models/namefind/en-ner-person.bin"))
-(def chunker (make-treebank-chunker "models/en-chunker.bin"))
 
+
+(defn read-input []
+  (loop [state :hello]  
+      (let [input (read-line)]
+          (when-not (= ":done" input) 
+           (cond 
+             (= state :hello) (do 
+                                (println (str "Nice to meet you " input " Are you interested in a park"))
+                                (recur :park-interested?)) 
+             (= state :park-interested?)  
+             (cond (= input "yes") (recur :park-interested-yes)
+                   (= input "no") (println "Bye bye")
+                    :else (do (println "Please answer yes or no")
+                            (recur state)))
+             :else
+             (do (println "Unknown state" state)
+               (recur :hello)))))))
 
 (def test-phrase
   [["hello" "hello how can I help?"]
    ["bye" "see you soon"]
+   ["my name is Peter" "nice to meet you Peter"]
+   ["Yes" "Do you know a parking space?"]])
+
+(def firststep
+  [["yes" "These parks have parking sport: "]
+   ["bye" "see you soon"]
    ["my name is Peter" "nice to meet you Peter"]])
 
 (defn response-test [input]
-  (or (second (first (filter (fn [[in out]]
-                                (= in input))
-                             test-phrase)))
-      "please say it again"))
+    (or (second (first (filter (fn [[in out]]
+                                  (= in input))
+                               test-phrase)))
+        "please say it again"))
 
-[(response-test "hello")
- (response-test "my name is Peter")
- (response-test "i am learning")]
+(defn response-first [input]
+    (or (second (first (filter (fn [[in out]]
+                                 (= in input))
+                               firststep)))
+        "please say it again"))
 
-
-
-
-(def test-phrase2
+(def test-phrase2  
   [[#"I'm near (.*)" "Let me search a park near "]
    [#"hello (.*)" "nice to meet you "]
    [#"bye (.*)" "see you soon "]])
 
 (defn match-test [in [pattern out]]
-    (when-let [[_ dyn] (re-matches pattern in)]
-        (str out dyn)))
+  (when-let [[_ dyn] (re-matches pattern in)]
+    (str out dyn)))
 
 (defn response-test2 [input]
   (or (some (partial match-test input)
-            test-phrase2)
+        test-phrase2)
       "please repeat"))
 
-(response-test2 "hello")
+;(response-test2 "bye clojure")
 
 
-(pprint (get-sentences "First sentence. Second sentence? Here is another one. And so on and so forth - you get the idea..."))
+
+(defn -main
+  [& args]
+  (println "Hello, what is your name?")
+  (read-input))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

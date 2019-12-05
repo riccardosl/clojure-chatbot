@@ -6,5 +6,6 @@
   :plugins [[nightlight/lein-nightlight "2.4.1"]
             [org.clojure/core.unify "0.5.7"]]
   :dependencies [[org.clojure/clojure "1.10.0"]
-		[clojure-opennlp "0.5.0"]]
-  :repl-options {:init-ns chatbot.core})
+                 ]
+  :repl-options {:init-ns chatbot.core}
+  :main chatbot.core)
