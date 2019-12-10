@@ -4,6 +4,7 @@
 
 (use 'clojure.java.browse)
 
+
 (def parks-info
           {"bertramka" "Bertramka info"
            "frantiska zahrada" "Frantiska zharada info"
@@ -35,7 +36,6 @@
               (println (str/upper-case (keys parks-info)))
               (recur state))))))
 
-
 (defn read-input []
   (loop [state :hello]
       (let [input (read-line)]
@@ -64,7 +64,10 @@
              (cond (= input "yes") (do
                                      (println (str "I suggest Betramka park. Can I open the link to the map? Type 'betramka' or 'no'"))
                                      (recur :park-map-yes))
+
                    (= input "no") (do (println "Pity they had Svickova on the menu today. Would you like to skate instead? Type 'yes' or 'no'")
+                   (= input "no") (do (println "Pity they had Svickova on the menu today. Would you like to skate instead? Type 'yes' or 'no'") 
+
 					(recur :park-skate-yes))
                    :else (do (println "Please answer betramka or no")
                            (recur state)))
@@ -102,6 +105,7 @@
              (do (println "Unknown state" state)
                (recur :hello)))))))
 
+
 (defn start-bot []
                  "A starting function"
                  (println "Hello, I am your Prague Park Chatbot!")
@@ -119,6 +123,7 @@
                         :else (do
                           (println "Please reply with \"help\" or \"information\"")
                           (recur state))))))
+
 
 
 (def test-phrase
@@ -163,6 +168,9 @@
 
 
 (defn -main
-  [& args]
+
   (start-bot)
+=======
+  (println "Hello, I'm a chatbot. What is your name?")
+  (read-input)
   )
