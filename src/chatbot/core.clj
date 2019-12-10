@@ -170,7 +170,6 @@
 (defn -main
 
   (start-bot)
-=======
   (println "Hello, I'm a chatbot. What is your name?")
   (read-input)
   )
