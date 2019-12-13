@@ -64,7 +64,13 @@
              (cond (= input "yes") (do
                                      (println (str "I suggest Betramka park. Can I open the link to the map? Type 'betramka' or 'no'"))
                                      (recur :park-map-yes))
+
                    (= input "no") (do (println "Pity they had Svickova on the menu today. Would you like to skate instead? Type 'yes' or 'no'")
+
+                   (= input "no") (do (println "Pity they had Svickova on the menu today. Would you like to skate instead? Type 'yes' or 'no'")
+                   (= input "no") (do (println "Pity they had Svickova on the menu today. Would you like to skate instead? Type 'yes' or 'no'") 
+
+
 					(recur :park-skate-yes))
                    :else (do (println "Please answer betramka or no")
                            (recur state)))
@@ -120,6 +126,25 @@
                           (println "Please reply with \"help\" or \"information\"")
                           (recur state))))))
 
+(defn start-bot []
+                 "A starting function"
+                 (println "Hello, I am your Prague Park Chatbot!")
+                 (println "I can help you choose a park to visit or give you information regarding a park.")
+                 (println "Would you like help or you need information?")
+                 (loop [state :start]
+                   (let [input (read-line)]
+                     (cond
+                       (= input "help")
+                         (do
+                           (read-input))
+                        (= input "information")
+                          (do
+                           (park-info-bot))
+                        :else (do
+                          (println "Please reply with \"help\" or \"information\"")
+                          (recur state))))))
+
+
 
 (def test-phrase
   [["hello" "hello how can I help?"]
@@ -165,4 +190,9 @@
 (defn -main
   [& args]
   (start-bot)
+=======
+
+  (start-bot)
+  (println "Hello, I'm a chatbot. What is your name?")
+  (read-input)
   )
