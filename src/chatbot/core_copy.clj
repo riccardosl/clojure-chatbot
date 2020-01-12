@@ -4,27 +4,6 @@
 
 (use 'clojure.java.browse)
 
-(def parks-info
-          {"bertramka" "Bertramka info"
-           "frantiska zahrada" "Frantiska zharada info"
-           "obora hvezda" "Obora Hvezda info"
-           "kampa" "Kampa info"
-           "kinskeho sady" "Kinskeho sady info"
-           "klamovka" "Klamovka info"
-           "ladronka" "Ladronka info"
-           "letenske sady" "Letenske sady info"
-           "petrin" "Petrin info"
-           "riegrovy sayd" "Riegrovy sady info"
-           "stromovka" "Stromovka info"
-           "vojanovy sady" "Vojanovy sady info"
-           "vysehrad" "Vysehrad info"
-            })
-
-
-
-
-
-
 (defn read-input []
   (loop [state :hello]
       (let [input (read-line)]
@@ -53,7 +32,7 @@
              (cond (= input "yes") (do
                                      (println (str "I suggest Betramka park. Can I open the link to the map? Type 'betramka' or 'no'"))
                                      (recur :park-map-yes))
-                   (= input "no") (do (println "Pity they had Svickova on the menu today. Would you like to skate instead? Type 'yes' or 'no'")
+                   (= input "no") (do (println "Pity they had Svickova on the menu today. Would you like to skate instead? Type 'yes' or 'no'") 
 					(recur :park-skate-yes))
                    :else (do (println "Please answer betramka or no")
                            (recur state)))
@@ -91,62 +70,6 @@
              (do (println "Unknown state" state)
                (recur :hello)))))))
 
-(defn park-info-bot []
-                (loop [state :start]
-                  (newline)
-                   (println "What park do you need info on? (Type name or \"list\" for list of parks with available information)")
-                     (let [input (str/lower-case (read-line))]
-                       (cond
-                         (contains? parks-info input)
-                         (do
-                           (println (get parks-info input))
-                           (println "Would you like info on another park or help with choosing a park?(info or help)")
-                           (let [input2 (str/lower-case (read-line))]
-                             (cond
-                               (= input2 "help")(do
-                                 (read-input))
-                               (= input2 "info")(do
-                                  (recur state)))))
-                         (= input "list")
-                           (do
-                             (println (str/upper-case (keys parks-info)))
-                             (recur state))))))
-
-(defn identify []
-  (println "I am still learning to do this, try asking me later"))
-
-
-(defn start-bot []
-                 "A starting function"
-                 (newline)
-                 (println "Hello, I am your Prague Park Chatbot!")
-                 (Thread/sleep 1000)
-                 (newline)
-                 (println "I can help you choose a park to visit or give you information regarding a park.")
-                 (Thread/sleep 1000)
-                 (println "I will also be able to help idetify things, but I am still learning to do this")
-                 (Thread/sleep 1000)
-                 (loop [state :start]
-                   (newline)
-                   (println "Would you like help or you need information? I can also help you with identifying a picture.")
-                   (let [input (read-line)]
-                     (cond
-                       (= input "help")
-                         (do
-                           (read-input)
-                           (recur state))
-                        (= input "information")
-                          (do
-                           (park-info-bot)
-                           (recur state))
-                        (= input "identify")
-                          (do
-                            (identify)
-                            (recur state))
-
-                        :else (do
-                          (println "Please reply with \"help\" or \"information\" or \"identify\"")
-                          (recur state))))))
 
 
 (def test-phrase
@@ -192,5 +115,6 @@
 
 (defn -main
   [& args]
-  (start-bot)
+  (println "Hello, I'm a chatbot. What is your name?")
+  (read-input)
   )
