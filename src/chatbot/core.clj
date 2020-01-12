@@ -4,6 +4,36 @@
 
 (use 'clojure.java.browse)
 
+(def parks-info
+          {"bertramka" "Bertramka info"
+           "frantiska zahrada" "Frantiska zharada info"
+           "obora hvezda" "Obora Hvezda info"
+           "kampa" "Kampa info"
+           "kinskeho sady" "Kinskeho sady info"
+           "klamovka" "Klamovka info"
+           "ladronka" "Ladronka info"
+           "letenske sady" "Letenske sady info"
+           "petrin" "Petrin info"
+           "riegrovy sayd" "Riegrovy sady info"
+           "stromovka" "Stromovka info"
+           "vojanovy sady" "Vojanovy sady info"
+           "vysehrad" "Vysehrad info"
+            })
+
+
+
+(defn park-info-bot []
+  (loop [state :start]
+    (println "What park do you need info on? (Type name or \"list\" for list of parks with available information)")
+      (let [input (str/lower-case (read-line))]
+        (cond
+          (contains? parks-info input)
+            (println (get parks-info input)))
+        (cond
+          (= input "list")
+            (do
+              (println (str/upper-case (keys parks-info)))
+              (recur state))))))
 
 
 (defn read-input []
@@ -34,7 +64,14 @@
              (cond (= input "yes") (do
                                      (println (str "I suggest Betramka park. Can I open the link to the map? Type 'betramka' or 'no'"))
                                      (recur :park-map-yes))
-                   (= input "no") (println "Pity they had Svickova on the menu today. Would you like to skate instead? Type 'yes' or 'no'")
+
+                   (= input "no") (do (println "Pity they had Svickova on the menu today. Would you like to skate instead? Type 'yes' or 'no'")
+
+                   (= input "no") (do (println "Pity they had Svickova on the menu today. Would you like to skate instead? Type 'yes' or 'no'")
+                   (= input "no") (do (println "Pity they had Svickova on the menu today. Would you like to skate instead? Type 'yes' or 'no'") 
+
+
+					(recur :park-skate-yes))
                    :else (do (println "Please answer betramka or no")
                            (recur state)))
              (= state :park-bike-yes)
@@ -42,7 +79,7 @@
                                      (println (str "Would you like to have food? Type 'yes' or 'no'"))
                                      (recur :park-food-yes))
                    (= input "no") (do
-                                    (println (str "Would you like to have food? Type 'yes' or 'no'"))
+                                    (println (str "Are you looking for a WC? Type 'yes' or 'no'"))
                                     (recur :park-food-yes))
                    :else (do (println "Please answer yes or no")
                            (recur state)))
@@ -54,14 +91,58 @@
                    :else (do (println "Please answer yes or no")
                                          (recur state)))
              (= state :park-skate-yes)
-             (cond (= input "yes") (do (println (str "I suggest Ladronka park. Can I open the link to the map? Type 'yes' or 'no'"))
+             (cond (= input "yes") (do (println (str "I suggest Ladronka park. Can I open the link to the map? Type 'ladronka' or 'no'"))
                                        (recur :park-map-yes))
                    (= input "no") (do
                                      (println (str "Not a problem, it also nice to walk")))
-             :else (do (println "Please answer yes or no")(recur state)))
+             :else (do (println "Please answer 'ladronka' or no")
+					(recur state)))
+             (= state :park-wc-yes)
+             (cond (= input "yes") (do (println (str "I suggest Riegrovy Sady. Can I open the link to the map? Type 'ladronka' or 'no'"))
+                                       (recur :park-map-yes))
+                   (= input "no") (do
+                                     (println (str "Not a problem, it also nice to walk")))
+             :else (do (println "Please answer 'ladronka' or no")
+					(recur state)))
              :else
              (do (println "Unknown state" state)
                (recur :hello)))))))
+
+(defn start-bot []
+                 "A starting function"
+                 (println "Hello, I am your Prague Park Chatbot!")
+                 (println "I can help you choose a park to visit or give you information regarding a park.")
+                 (println "Would you like help or you need information?")
+                 (loop [state :start]
+                   (let [input (read-line)]
+                     (cond
+                       (= input "help")
+                         (do
+                           (read-input))
+                        (= input "information")
+                          (do
+                           (park-info-bot))
+                        :else (do
+                          (println "Please reply with \"help\" or \"information\"")
+                          (recur state))))))
+
+(defn start-bot []
+                 "A starting function"
+                 (println "Hello, I am your Prague Park Chatbot!")
+                 (println "I can help you choose a park to visit or give you information regarding a park.")
+                 (println "Would you like help or you need information?")
+                 (loop [state :start]
+                   (let [input (read-line)]
+                     (cond
+                       (= input "help")
+                         (do
+                           (read-input))
+                        (= input "information")
+                          (do
+                           (park-info-bot))
+                        :else (do
+                          (println "Please reply with \"help\" or \"information\"")
+                          (recur state))))))
 
 
 
@@ -108,6 +189,10 @@
 
 (defn -main
   [& args]
+  (start-bot)
+=======
+
+  (start-bot)
   (println "Hello, I'm a chatbot. What is your name?")
   (read-input)
-  (response-test2 "bye clojure"))
+  )
