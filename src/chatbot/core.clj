@@ -55,12 +55,7 @@
                                      (recur :park-map-yes))
 
                    (= input "no") (do (println "Pity they had Svickova on the menu today. Would you like to skate instead? Type 'yes' or 'no'")
-
-                   (= input "no") (do (println "Pity they had Svickova on the menu today. Would you like to skate instead? Type 'yes' or 'no'")
-                   (= input "no") (do (println "Pity they had Svickova on the menu today. Would you like to skate instead? Type 'yes' or 'no'") 
-
-
-					(recur :park-skate-yes))
+					                            (recur :park-skate-yes))
                    :else (do (println "Please answer betramka or no")
                            (recur state)))
              (= state :park-bike-yes)
@@ -82,8 +77,7 @@
              (= state :park-skate-yes)
              (cond (= input "yes") (do (println (str "I suggest Ladronka park. Can I open the link to the map? Type 'ladronka' or 'no'"))
                                        (recur :park-map-yes))
-                   (= input "no") (do
-                                     (println (str "Not a problem, it also nice to walk")))
+                   (= input "no") (do (println (str "Not a problem, it also nice to walk")))
              :else (do (println "Please answer 'ladronka' or no")
 					(recur state)))
              (= state :park-wc-yes)
@@ -217,9 +211,6 @@
 
 (defn -main
   [& args]
-  (start-bot)
-=======
-
   (start-bot)
   (println "Hello, I'm a chatbot. What is your name?")
   (read-input)
