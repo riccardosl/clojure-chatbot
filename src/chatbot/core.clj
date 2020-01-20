@@ -1,11 +1,6 @@
 (ns chatbot.core
-  (:require
-            [clojure.java.io :as io]
-            [clojure.string :as str]
-            [clojure.pprint :as p]
-            [fruits.simple :as ntw]
-            [cortex.util :as util])
-  (:import [java.io File]))
+  (:require [clojure.string :as str]
+            [clojure.pprint :as p]))
 
 (use 'clojure.java.browse)
 
@@ -118,11 +113,7 @@
                              (recur state))))))
 
 (defn identify []
-  (println "I am still learning to do this, try asking me later")
-  (def nippy (util/read-nippy-file "trained-network.nippy"))
-  (def animal (ntw/guess nippy "samples/cat_0001.jpg"))
-  (println "it is" animal)
-  )
+  (println "I am still learning to do this, try asking me later"))
 
 
 (defn start-bot []
