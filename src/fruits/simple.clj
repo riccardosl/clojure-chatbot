@@ -33,7 +33,7 @@
    :labels
    util/max-index
    mappings)))
-(def nippy (util/read-nippy-file "trained-network.nippy"))
+
 (defn guess
   ([nippy image-path] (guess nippy image-path categories))
   ([nippy image-path mappings]
@@ -44,10 +44,13 @@
    util/max-index
    mappings))))
 
+
+
 (defn guess-debug [nippy image-path]
   (let[obs (image-file->observation image-path) ]
   (-> (execute/run nippy [obs])
    first)))
+
 
 (defn list-images-in[folder]
   (into [] (filter #(let[fname (clojure.string/lower-case %) ]
@@ -67,8 +70,12 @@
           ]
       (clojure.pprint/pprint
         (if (.isDirectory input)
-         (let[imgs (list-images-in input)] (zipmap imgs (guesses nippy imgs)))
-         [input (guess-with-mappings nippy input mapping)])))))
+         (let[imgs (list-images-in input)] (zipmap imgs (guesses nippy imgs))))))))
+
+  (defn guess_image []
+      (def nippy (util/read-nippy-file "trained-network.nippy"))
+      (println (guess-with-mappings nippy "cat_0001.jpg" "fruits-mapping.edn"))
+  )
 
 (comment
 

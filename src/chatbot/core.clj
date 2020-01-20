@@ -119,9 +119,7 @@
 
 (defn identify []
   (println "I am still learning to do this, try asking me later")
-  (def nippy (util/read-nippy-file "trained-network.nippy"))
-  (def animal (ntw/guess nippy "samples/cat_0001.jpg"))
-  (println "it is" animal)
+  (ntw/guess_image)
   )
 
 
