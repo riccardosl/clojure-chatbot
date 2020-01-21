@@ -121,7 +121,7 @@
   (println "What do you want identified? You can just drop the image here and I will have a look :)")
   (def image (read-line))
   (def image-path (str/trim (str/replace image "'" "")))
-  (print "Great it seems like you saw a ")
+  (print "Great it seems like you saw a.................")
   (ntw/guess_image image-path)
   )
 
