@@ -3,7 +3,7 @@
             [clojure.java.io :as io]
             [clojure.string :as str]
             [clojure.pprint :as p]
-            [fruits.simple :as ntw]
+            [identify.simple :as ntw]
             [cortex.util :as util])
   (:import [java.io File]))
 
@@ -118,8 +118,11 @@
                              (recur state))))))
 
 (defn identify []
-  (println "I am still learning to do this, try asking me later")
-  (ntw/guess_image)
+  (println "What do you want identified? You can just drop the image here and I will have a look :)")
+  (def image (read-line))
+  (def image-path (str/trim (str/replace image "'" "")))
+  (print "Great it seems like you saw a ")
+  (ntw/guess_image image-path)
   )
 
 
