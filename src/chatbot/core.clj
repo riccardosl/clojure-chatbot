@@ -35,9 +35,9 @@
       (let [input (read-line)]
           (when-not (= ":done" input)
            (cond
-             (= state :hello) (do
-                                (println (str "Nice to meet you " input "! Are you interested in a park? Type 'yes' or 'no'"))
-                                (recur :park-interested?))
+;             (= state :hello) (do
+;                                (println (str "Nice to meet you " input "! Are you interested in a park? Type 'yes' or 'no'"))
+;                                (recur :park-interested?))
              (= state :park-interested?)
              (cond (= input "yes") (do
                                      (println (str "Would you a parking space for a car? Type 'yes' or 'no'"))
@@ -133,9 +133,9 @@
                  (Thread/sleep 1000)
                  (newline)
                  (println "I can help you choose a park to visit or give you information regarding a park.")
-                 (Thread/sleep 1000)
+                 ;(Thread/sleep 1000)
                  (println "I will also be able to help idetify things, but I am still learning to do this")
-                 (Thread/sleep 1000)
+                 ;(Thread/sleep 1000)
                  (loop [state :start]
                    (newline)
                    (println "Would you like help or you need information? I can also help you with identifying a picture.")
