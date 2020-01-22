@@ -1,6 +1,14 @@
 (ns chatbot.core
-  (:require [clojure.string :as str]
-            [clojure.pprint :as p]))
+
+  (:require
+            [clojure.java.io :as io]
+            [clojure.string :as str]
+            [clojure.pprint :as p]
+            [identify.simple :as ntw]
+            [cortex.util :as util])
+  (:import [java.io File]))
+
+
 
 (use 'clojure.java.browse)
 
@@ -30,9 +38,9 @@
       (let [input (read-line)]
           (when-not (= ":done" input)
            (cond
-             (= state :hello) (do
-                                (println (str "Nice to meet you " input "! Are you interested in a park? Type 'yes' or 'no'"))
-                                (recur :park-interested?))
+;             (= state :hello) (do
+;                                (println (str "Nice to meet you " input "! Are you interested in a park? Type 'yes' or 'no'"))
+;                                (recur :park-interested?))
              (= state :park-interested?)
              (cond (= input "yes") (do
                                      (println (str "Would you a parking space for a car? Type 'yes' or 'no'"))
@@ -113,7 +121,13 @@
                              (recur state))))))
 
 (defn identify []
-  (println "I am still learning to do this, try asking me later"))
+  (println "What do you want identified? You can just drop the image here and I will have a look :)")
+  (def image (read-line))
+  (def image-path (str/trim (str/replace image "'" "")))
+  (print "Great it seems like you saw a.................")
+  (ntw/guess_image image-path)
+  )
+
 
 
 (defn start-bot []
@@ -123,9 +137,9 @@
                  (Thread/sleep 1000)
                  (newline)
                  (println "I can help you choose a park to visit or give you information regarding a park.")
-                 (Thread/sleep 1000)
+                 ;(Thread/sleep 1000)
                  (println "I will also be able to help idetify things, but I am still learning to do this")
-                 (Thread/sleep 1000)
+                 ;(Thread/sleep 1000)
                  (loop [state :start]
                    (newline)
                    (println "Would you like help or you need information? I can also help you with identifying a picture.")
