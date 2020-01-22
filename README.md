@@ -22,7 +22,7 @@ Depending on your operating system different steps are necessary to install the 
 
 > git clone https://github.com/riccardosl/clojure-chatbot.git  # Clone the github repository, request your Gituhub credentials.
 > cd /clojure-chatbot # Browse the project folder.
-> lein run # Run the chatbot and start interaction.
+> lein run # Run the chatbot and start interaction. End command not implemented yet. Use control-C to quit.
 
 ```
 ## Future development
