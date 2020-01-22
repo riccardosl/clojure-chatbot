@@ -34,7 +34,7 @@
 
 
 (defn read-input []
-  (loop [state :hello]
+  (loop [state :park-interested?]
       (let [input (read-line)]
           (when-not (= ":done" input)
            (cond
@@ -108,7 +108,7 @@
                          (contains? parks-info input)
                          (do
                            (println (get parks-info input))
-                           (println "Would you like info on another park or help with choosing a park?(info or help)")
+                           (println "Would you like info on another park or help with choosing a park?(Type info or help)")
                            (let [input2 (str/lower-case (read-line))]
                              (cond
                                (= input2 "help")(do
@@ -124,7 +124,7 @@
   (println "What do you want identified? You can just drop the image here and I will have a look :)")
   (def image (read-line))
   (def image-path (str/trim (str/replace image "'" "")))
-  (print "Great it seems like you saw a.................")
+  (print "Great it seems like you saw a:")
   (ntw/guess_image image-path)
   )
 
@@ -134,11 +134,11 @@
                  "A starting function"
                  (newline)
                  (println "Hello, I am your Prague Park Chatbot!")
-                 (Thread/sleep 1000)
+                 ;(Thread/sleep 1000)
                  (newline)
                  (println "I can help you choose a park to visit or give you information regarding a park.")
                  ;(Thread/sleep 1000)
-                 (println "I will also be able to help idetify things, but I am still learning to do this")
+                 (println "I will also be able to help identify things, but I am still learning to do this")
                  ;(Thread/sleep 1000)
                  (loop [state :start]
                    (newline)
@@ -226,6 +226,5 @@
 (defn -main
   [& args]
   (start-bot)
-  (println "Hello, I'm a chatbot. What is your name?")
   (read-input)
   )
