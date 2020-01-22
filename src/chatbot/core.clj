@@ -33,6 +33,44 @@
 
 
 
+
+(defn identify_image []
+  (loop [state :hello]
+      (let [input (read-line)]
+          (when-not (= ":done" input)
+           (cond
+             (= state :hello) (do
+                                (println (str "Hello! Do you want me helping you recognize flowers? Type 'yes' or 'no'"))
+                                (recur :flower-interested?))
+             (= state :flower-interested?)
+             (cond (= input "yes") (do
+                                     (println (str "Great! What was the color? Type 'red' or 'yellow'"))
+                                     (recur :flower-yes))
+                   (= input "red") (println "I'm just a park bot. Do you need information about parks?")
+                    :else (do (println "Please answer ............")
+                            (recur state)))
+             (= state :flower-yes)
+             (cond (= input "yes") (do
+                                     (println (str "Was top of the flower round? Type 'yes' or 'no'"))
+                                     (recur :flower-round))
+                   (= input "no") (do
+                                    (println (str "It's hard to determine. Would you like to upload a picture? Type 'yes' or 'no'"))
+                                    (recur :park-bike-yes))
+                    :else (do (println "Please answer .........")
+                            (recur state)))
+             (= state :flower-round)
+             (cond (= input "yes") (do
+                                     (println (str "I can guess it might be flower A or flower B"))
+                                     (recur :toimplement))
+                   (= input "no") (do (println "Please upload a picture or the path below")
+					                            (recur :toimplement))
+                   :else (do (println "Please answer ...........")
+                           (recur state)))
+             :else
+             (do (println "Unknown state" state)
+               (recur :hello)))))))
+
+
 (defn read-input []
   (loop [state :park-interested?]
       (let [input (read-line)]
@@ -155,14 +193,14 @@
                            (recur state))
                         (= input "identify")
                           (do
-                            (identify)
+                            (identify_image)
                             (recur state))
 
                         :else (do
                           (println "Please reply with \"help\" or \"information\" or \"identify\"")
                           (recur state))))))
 
-(defn start-bot []
+(defn start-bot1 []
                  "A starting function"
                  (println "Hello, I am your Prague Park Chatbot!")
                  (println "I can help you choose a park to visit or give you information regarding a park.")
