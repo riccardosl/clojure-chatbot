@@ -3,6 +3,9 @@
 This small application is developed to give a sample to "Prague municipality" regarding capabilities of chatbot app.
 The demo wants to present basic function of asking the name of the user, asking different questions about the specific requirements for a public park in Prague.
 The chatbot is collecting feedback from the user and offering information about a public park offering a link to the online maps or a small description to reach it.
+
+# Text for image recognition
+
 ## Installation
 
 The chatbot is written in Clojure, a functional programming language running on Java Virtual Machine.
