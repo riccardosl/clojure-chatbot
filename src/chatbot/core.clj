@@ -1,10 +1,11 @@
 (ns chatbot.core
+
   (:require
-            [clojure.java.io :as io]
-            [clojure.string :as str]
-            [clojure.pprint :as p]
-            [identify.simple :as ntw]
-            [cortex.util :as util])
+   [clojure.java.io :as io]
+   [clojure.string :as str]
+   [clojure.pprint :as p]
+   [identify.simple :as ntw]
+   [cortex.util :as util])
   (:import [java.io File]))
 
 (use 'clojure.java.browse)
@@ -27,74 +28,124 @@
 
 
 
-
-
-
 (defn read-input []
+ (loop [state :park-interested?]
+   (let [input (read-line)]
+     (if-not (= ":done" input)
+       (cond
+
+         (= state :park-interested?)
+         (cond (= input "yes") (do
+                                 (println (str "Would you a parking space for a car? Type 'yes' or 'no'"))
+                                 (recur :park-interested-yes))
+               (= input "no") (println "I can't help sorry. I'm just a park bot. Bye")
+               :else (do (println "Please answer yes or no")
+                         (recur state)))
+         (= state :park-interested-yes)
+         (cond (= input "yes") (do
+                                 (println (str "Would you like to have food? Type 'yes' or 'no'"))
+                                 (recur :park-food-yes))
+               (= input "no") (do
+                                (println (str "Would you like to ride a bike? Type 'yes' or 'no'"))
+                                (recur :park-bike-yes))
+               :else (do (println "Please answer yes or no")
+                         (recur state)))
+         (= state :park-food-yes)
+         (cond (= input "yes") (do
+                                 (println (str "I suggest Betramka park. Can I open the link to the map? Type 'betramka' or 'no'"))
+                                 (recur :park-map-yes))
+
+               (= input "no") (do (println "Pity they had Svickova on the menu today. Would you like to skate instead? Type 'yes' or 'no'")
+                                  (recur :park-skate-yes))
+               :else (do (println "Please answer betramka or no")
+                         (recur state)))
+         (= state :park-bike-yes)
+         (cond (= input "yes") (do
+                                 (println (str "Would you like to have food? Type 'yes' or 'no'"))
+                                 (recur :park-food-yes))
+               (= input "no") (do
+                                (println (str "Are you looking for a WC? Type 'yes' or 'no'"))
+                                (recur :park-food-yes))
+               :else (do (println "Please answer yes or no")
+                         (recur state)))
+         (= state :park-map-yes)
+         (cond (= input "betramka") (do (browse-url "https://en.mapy.cz/s/funetamute"))
+               (= input "ladronka") (do (browse-url "https://en.mapy.cz/s/pakezonala"))
+               (= input "no") (do
+                                (println (str "Not a problem, my suggestion to reach it is Plzenska street or tram stop 'Betramka'")))
+               :else (do (println "Please answer yes or no")
+                         (recur state)))
+         (= state :park-skate-yes)
+         (cond (= input "yes") (do (println (str "I suggest Ladronka park. Can I open the link to the map? Type 'ladronka' or 'no'"))
+                                   (recur :park-map-yes))
+               (= input "no") (do (println (str "Not a problem, it also nice to walk")))
+               :else (do (println "Please answer 'ladronka' or no")
+                         (recur state)))
+         (= state :park-wc-yes)
+         (cond (= input "yes") (do (println (str "I suggest Riegrovy Sady. Can I open the link to the map? Type 'ladronka' or 'no'"))
+                                   (recur :park-map-yes))
+               (= input "no") (do
+                                (println (str "Not a problem, it also nice to walk")))
+               :else (do (println "Please answer 'ladronka' or no")
+                         (recur state)))
+         :else
+         (do (println "Unknown state" state)
+             (recur :hello)))
+       (do
+         (println "GoodBye!")
+         :done)))))
+
+(defn identify []
+  (println "What do you want identified? You can just drop the image here and I will have a look :)")
+  (def image (read-line))
+  (def image-path (str/trim (str/replace image "'" "")))
+  (print "Great it seems like you saw a:")
+  (ntw/guess_image image-path))
+
+
+
+
+(defn identify_image []
   (loop [state :hello]
-      (let [input (read-line)]
-          (when-not (= ":done" input)
-           (cond
-             (= state :hello) (do
-                                (println (str "Nice to meet you " input "! Are you interested in a park? Type 'yes' or 'no'"))
-                                (recur :park-interested?))
-             (= state :park-interested?)
-             (cond (= input "yes") (do
-                                     (println (str "Would you a parking space for a car? Type 'yes' or 'no'"))
-                                     (recur :park-interested-yes))
-                   (= input "no") (println "I can't help sorry. I'm just a park bot. Bye")
-                    :else (do (println "Please answer yes or no")
-                            (recur state)))
-             (= state :park-interested-yes)
-             (cond (= input "yes") (do
-                                     (println (str "Would you like to have food? Type 'yes' or 'no'"))
-                                     (recur :park-food-yes))
-                   (= input "no") (do
-                                    (println (str "Would you like to ride a bike? Type 'yes' or 'no'"))
-                                    (recur :park-bike-yes))
-                    :else (do (println "Please answer yes or no")
-                            (recur state)))
-             (= state :park-food-yes)
-             (cond (= input "yes") (do
-                                     (println (str "I suggest Betramka park. Can I open the link to the map? Type 'betramka' or 'no'"))
-                                     (recur :park-map-yes))
-                   (= input "no") (do (println "Pity they had Svickova on the menu today. Would you like to skate instead? Type 'yes' or 'no'")
-					(recur :park-skate-yes))
-                   :else (do (println "Please answer betramka or no")
-                           (recur state)))
-             (= state :park-bike-yes)
-             (cond (= input "yes") (do
-                                     (println (str "Would you like to have food? Type 'yes' or 'no'"))
-                                     (recur :park-food-yes))
-                   (= input "no") (do
-                                    (println (str "Are you looking for a WC? Type 'yes' or 'no'"))
-                                    (recur :park-food-yes))
-                   :else (do (println "Please answer yes or no")
-                           (recur state)))
-             (= state :park-map-yes)
-             (cond (= input "betramka") (do (browse-url "https://en.mapy.cz/s/funetamute"))
-                   (= input "ladronka") (do (browse-url "https://en.mapy.cz/s/pakezonala"))
-                   (= input "no") (do
-                                    (println (str "Not a problem, my suggestion to reach it is Plzenska street or tram stop 'Betramka'")))
-                   :else (do (println "Please answer yes or no")
-                                         (recur state)))
-             (= state :park-skate-yes)
-             (cond (= input "yes") (do (println (str "I suggest Ladronka park. Can I open the link to the map? Type 'ladronka' or 'no'"))
-                                       (recur :park-map-yes))
-                   (= input "no") (do
-                                     (println (str "Not a problem, it also nice to walk")))
-             :else (do (println "Please answer 'ladronka' or no")
-					(recur state)))
-             (= state :park-wc-yes)
-             (cond (= input "yes") (do (println (str "I suggest Riegrovy Sady. Can I open the link to the map? Type 'ladronka' or 'no'"))
-                                       (recur :park-map-yes))
-                   (= input "no") (do
-                                     (println (str "Not a problem, it also nice to walk")))
-             :else (do (println "Please answer 'ladronka' or no")
-					(recur state)))
-             :else
-             (do (println "Unknown state" state)
-               (recur :hello)))))))
+    (let [input (when-not (= :hello state) (read-line)) ]
+      (if-not (= ":done" input)
+        (cond
+          (= state :hello) (do
+                             (println (str "Hello! Do you want me helping you recognize flowers? Type 'yes' or 'no'"))
+                             (recur :flower-interested?))
+          (= state :flower-interested?)
+          (cond (= input "yes") (do
+                                  (println (str "Great! What was the color? Type 'red' or 'yellow'"))
+                                  (recur :flower-yes))
+                (= input "no") (do
+                                 (read-input))
+                :else (do (println "Please type 'yes' or 'no'")
+                          (recur state)))
+          (= state :flower-yes)
+          (cond (= input "yes") (do
+                                  (println (str "Was the shape of the flower round? Type 'yes' or 'no'"))
+                                  (recur :flower-round))
+                (= input "no") (do
+                                 (println (str "It's hard to determine. Do you have a picture? Type 'yes' or 'no'"))
+                                 (recur :park-bike-yes))
+                :else (do (println "Please answer .........")
+                          (recur state)))
+          (= state :flower-round)
+          (cond (= input "yes") (do
+                                  (println (str "I can guess it might be flower A or flower B"))
+                                  (recur :toimplement))
+                (= input "no") (do (identify)
+                                   (recur :toimplement))
+                :else (do (println "Please type 'yes' or 'no'")
+                          (recur state)))
+          :else
+          (do (println "Unknown state" state)
+              (recur :hello)))
+        (do
+          (println "GoodBye!")
+          :done)))))
+
+
 
 (defn park-info-bot []
                 (loop [state :start]
@@ -112,18 +163,11 @@
                                  (read-input))
                                (= input2 "information")(do
                                   (recur state)))))
-                         (= input "list")
-                           (do
-                             (println (str/upper-case (keys parks-info)))
-                             (recur state))))))
+        (= input "list")
+        (do
+          (println (str/upper-case (keys parks-info)))
+          (recur state))))))
 
-(defn identify []
-  (println "What do you want identified? You can just drop the image here and I will have a look :)")
-  (def image (read-line))
-  (def image-path (str/trim (str/replace image "'" "")))
-  (print "Great it seems like you saw a.................")
-  (ntw/guess_image image-path)
-  )
 
 
 (defn start-bot []
@@ -151,7 +195,7 @@
                            (recur state))
                         (= input "identify")
                           (do
-                            (identify)
+                            (identify_image)
                             (recur state))
 
                         :else (do
@@ -200,7 +244,7 @@
 
 
 
+
 (defn -main
   [& args]
-  (start-bot)
-  )
+  (start-bot))
