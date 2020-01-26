@@ -28,6 +28,17 @@
 
 
 
+
+
+(defn identify []
+  (println "What do you want identified? You can just drop the image here and I will have a look :)")
+  (def image (read-line))
+  (def image-path (str/trim (str/replace image "'" "")))
+  (print "Great it seems like you saw a:")
+  (ntw/guess_image image-path))
+
+
+
 (defn read-input []
  (loop [state :park-interested?]
    (let [input (read-line)]
@@ -92,19 +103,8 @@
          (do (println "Unknown state" state)
              (recur :hello)))
        (do
-         (println "GoodBye!")
+         (println "I'm sorry that you want to go... You can always come back in the future!")
          :done)))))
-
-
-(defn identify []
-  (println "What do you want identified? You can just drop the image here and I will have a look :)")
-  (def image (read-line))
-  (def image-path (str/trim (str/replace image "'" "")))
-  (print "Great it seems like you saw a:")
-  (ntw/guess_image image-path))
-
-
-
 
 (defn identify_image []
   (loop [state :hello]
@@ -116,53 +116,61 @@
                              (recur :flower-interested?))
           (= state :flower-interested?)
           (cond (= input "yes") (do
-                                  (println (str "Great! What was the color? Type 'red' or 'yellow'"))
+                                  (println (str "Great! What is the flower predominant color? Type 'red' or 'yellow'"))
                                   (recur :flower-yes))
                 (= input "no") (do
-                                 (read-input))
-                :else (do (println "Please type 'yes' or 'no'")
+                                 (:done))
+                :else (do (println "Please type one of the two options")
                           (recur state)))
           (= state :flower-yes)
-          (cond (= input "yes") (do
+          (cond (= input "yellow") (do
                                   (println (str "Was the shape of the flower round? Type 'yes' or 'no'"))
                                   (recur :flower-round))
-                (= input "no") (do
-                                 (println (str "It's hard to determine. Do you have a picture? Type 'yes' or 'no'"))
-                                 (recur :park-bike-yes))
-                :else (do (println "Please answer .........")
+                (= input "red") (do
+                                 (println (str "ok let's continue"))
+                                 (recur :flower-round))
+                :else (do (println "Please type one of the two options")
                           (recur state)))
           (= state :flower-round)
           (cond (= input "yes") (do
-                                  (println (str "I can guess it might be flower A or flower B"))
-                                  (recur :toimplement))
-                (= input "no") (do (identify)
-                                   (recur :toimplement))
-                :else (do (println "Please type 'yes' or 'no'")
+                                  (println (str "I can guess it might be in the category of Sunflower or Daisy.. Please press enter to upload a picture so I can be precise"))
+                                  (recur :upload))
+                (= input "no") (do (println "I can guess it might be in the category of Roses. Please upload a picture or the path below")
+                                   (recur :upload))
+                :else (do (println "Please type enter once again to continue")
+                          (recur state)))
+          (= state :upload)
+          (cond (= input "yes") (do
+                                  (identify))
+
+                (= input "no") (do (println "I'm still learning to recognize pictures. Type :done to exit")
+                                   )
+                :else (do (println "Please type enter once again to continue")
                           (recur state)))
           :else
           (do (println "Unknown state" state)
               (recur :hello)))
         (do
-          (println "GoodBye!")
+          (println "I'm sorry that you want to go... You can always come back in the future!")
           :done)))))
 
 
 
 (defn park-info-bot []
-                (loop [state :start]
-                  (newline)
-                   (println "What park do you need information on? (Type name or \"list\" for list of parks with available information)")
-                     (let [input (str/lower-case (read-line))]
-                       (cond
-                         (contains? parks-info input)
-                         (do
-                           (println (get parks-info input))
-                           (println "Would you like information on another park or help with choosing a park?(information or help)")
-                           (let [input2 (str/lower-case (read-line))]
-                             (cond
-                               (= input2 "help")(do
-                                 (read-input))
-                               (= input2 "information")(do
+  (loop [state :start]
+    (newline)
+    (println "What park do you need info on? (Type name or \"list\" for list of parks with available information)")
+    (let [input (str/lower-case (read-line))]
+      (cond
+        (contains? parks-info input)
+        (do
+          (println (get parks-info input))
+          (println "Would you like info on another park or help with choosing a park?(Type info or help)")
+          (let [input2 (str/lower-case (read-line))]
+            (cond
+              (= input2 "help") (do
+                                  (read-input))
+              (= input2 "info") (do
                                   (recur state)))))
         (= input "list")
         (do
@@ -170,80 +178,61 @@
           (recur state))))))
 
 
+
+
+(defn start-bot1 []
+  "A starting function"
+  (println "Hello, I am your Prague Park Chatbot!")
+  (println "I can help you choose a park to visit or give you information regarding a park.")
+  (println "Would you like help or you need information?")
+  (loop [state :start]
+    (let [input (read-line)]
+      (cond
+        (= input "help")
+        (do
+          (read-input))
+        (= input "information")
+        (do
+          (park-info-bot))
+        :else (do
+                (println "Please reply with \"help\" or \"information\"")
+                (recur state))))))
+
+
+
 (defn start-bot []
-                 "A starting function"
-                 (newline)
-                 (println "Hello, I am your Prague Park Chatbot!")
-                 (Thread/sleep 1000)
-                 (newline)
-                 (println "I can help you choose a park to visit or give you information regarding a park.")
-                 (Thread/sleep 1000)
-                 (println "I can also help identify flowers")
-                 (Thread/sleep 1000)
-                 (loop [state :start]
-                   (newline)
-                   (println "Would you like help or you need information? I can also help you with identifying a flower?")
-                   (let [input (read-line)]
-                     (cond
-                       (= input "help")
-                         (do
-                           (read-input)
-                           (recur state))
-                        (= input "information")
-                          (do
-                           (park-info-bot)
-                           (recur state))
-                        (= input "identify")
-                          (do
-                            (identify_image)
-                            (recur state))
+  "A starting function"
+  (newline)
+  (println "Hello, I am your Prague Park Chatbot!")
+  (Thread/sleep 1000)
+  (newline)
+  (println "I can help you choose a park to visit or give you information regarding a park.")
+  (Thread/sleep 1000)
+  (newline)
+  (println "I will also be able to help identify flowers, but I am still learning to do this")
+  (Thread/sleep 1000)
+  (loop [state :start]
+    (newline)
+    (println "Please reply with \"help\" or \"information\" or \"identify\". At any time you can exit typing \":done\"")
+    (let [input (read-line)]
+      (if-not (= input ":done")
+        (cond
+          (= input "help")
+          (when-not (= :done (read-input))
+            (recur state))
+          (= input "information")
+          (when-not (= :done (park-info-bot))
+            (recur state))
+          (= input "identify")
+          (when-not (= :done (identify_image))
+            (recur state))
 
-                        :else (do
-                          (println "Please reply with \"help\" or \"information\" or \"identify\"")
-                          (recur state))))))
-
-
-(def test-phrase
-  [["hello" "hello how can I help?"]
-   ["bye" "see you soon"]
-   ["my name is Peter" "nice to meet you Peter"]
-   ["Yes" "Do you know a parking space?"]])
-
-(def firststep
-  [["yes" "These parks have parking sport: "]
-   ["bye" "see you soon"]
-   ["my name is Peter" "nice to meet you Peter"]])
-
-(defn response-test [input]
-    (or (second (first (filter (fn [[in out]]
-                                  (= in input))
-                               test-phrase)))
-        "please say it again"))
-
-(defn response-first [input]
-    (or (second (first (filter (fn [[in out]]
-                                 (= in input))
-                               firststep)))
-        "please say it again"))
-
-(def test-phrase2
-  [[#"I'm near (.*)" "Let me search a park near "]
-   [#"hello (.*)" "nice to meet you "]
-   [#"bye (.*)" "see you soon "]])
-
-(defn match-test [in [pattern out]]
-  (when-let [[_ dyn] (re-matches pattern in)]
-    (str out dyn)))
-
-(defn response-test2 [input]
-  (or (some (partial match-test input)
-        test-phrase2)
-      "please repeat"))
-
-;(response-test2 "bye clojure")
-
-
-
+          :else (do
+                  (println "Please reply with \"help\" or \"information\" or \"identify\". At any time you can exit typing \":done\"")
+                  (recur state)))
+        (do
+          (println "I'm sorry that you want to go... You can always come back in the future!")
+          :done)))))
 
 (defn -main
   [& args]
