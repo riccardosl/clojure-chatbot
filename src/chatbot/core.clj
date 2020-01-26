@@ -10,19 +10,19 @@
 (use 'clojure.java.browse)
 
 (def parks-info
-          {"bertramka" "Bertramka info"
-           "frantiska zahrada" "Frantiska zharada info"
-           "obora hvezda" "Obora Hvezda info"
-           "kampa" "Kampa info"
-           "kinskeho sady" "Kinskeho sady info"
-           "klamovka" "Klamovka info"
-           "ladronka" "Ladronka info"
-           "letenske sady" "Letenske sady info"
-           "petrin" "Petrin info"
-           "riegrovy sayd" "Riegrovy sady info"
-           "stromovka" "Stromovka info"
-           "vojanovy sady" "Vojanovy sady info"
-           "vysehrad" "Vysehrad info"
+          {"bertramka" "Bertramka is a park with a garden which was often the home to W. A. Mozart, who's museum you can visit there. It is open all year long."
+           "frantiska zahrada" "Frantiska zharada is a garden in the center of Prague suitable for sitting on a bench or to play with children. It is open all yer long."
+           "obora hvezda" "A great place for kite flyting or nordic skiing during winter and to see the hexagram summer castle."
+           "kampa" "Small park near Charle's bridge."
+           "kinskeho zahrada" "A garden near Petrin with complicated water garden."
+           "klamovka" "Romantic park ideal for walks or visiting the playground with children."
+           "ladronka" "Grass plains with in-line skate track."
+           "letenske sady" "One of the best places to sit in summer. "
+           "petrin" "Beatifull in spring and autumn with the Petrin tower and observatory nearby."
+           "riegrovy sayd" "100 year old park with great views of Prague"
+           "stromovka" "Could be considered the Central park of Prague. Great place for picknics or sports."
+           "vojanovy sady" "A garden with melancholy of the middle ages. The place to go to get away from the city rush"
+           "vysehrad" "Old baroque fortress related to many old czech legends"
             })
 
 
@@ -99,18 +99,18 @@
 (defn park-info-bot []
                 (loop [state :start]
                   (newline)
-                   (println "What park do you need info on? (Type name or \"list\" for list of parks with available information)")
+                   (println "What park do you need information on? (Type name or \"list\" for list of parks with available information)")
                      (let [input (str/lower-case (read-line))]
                        (cond
                          (contains? parks-info input)
                          (do
                            (println (get parks-info input))
-                           (println "Would you like info on another park or help with choosing a park?(info or help)")
+                           (println "Would you like information on another park or help with choosing a park?(information or help)")
                            (let [input2 (str/lower-case (read-line))]
                              (cond
                                (= input2 "help")(do
                                  (read-input))
-                               (= input2 "info")(do
+                               (= input2 "information")(do
                                   (recur state)))))
                          (= input "list")
                            (do
@@ -134,11 +134,11 @@
                  (newline)
                  (println "I can help you choose a park to visit or give you information regarding a park.")
                  (Thread/sleep 1000)
-                 (println "I will also be able to help idetify things, but I am still learning to do this")
+                 (println "I can also help identify flowers")
                  (Thread/sleep 1000)
                  (loop [state :start]
                    (newline)
-                   (println "Would you like help or you need information? I can also help you with identifying a picture.")
+                   (println "Would you like help or you need information? I can also help you with identifying a flower?")
                    (let [input (read-line)]
                      (cond
                        (= input "help")
