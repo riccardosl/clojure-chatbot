@@ -95,6 +95,17 @@
          (println "GoodBye!")
          :done)))))
 
+
+(defn identify []
+  (println "What do you want identified? You can just drop the image here and I will have a look :)")
+  (def image (read-line))
+  (def image-path (str/trim (str/replace image "'" "")))
+  (print "Great it seems like you saw a:")
+  (ntw/guess_image image-path))
+
+
+
+
 (defn identify_image []
   (loop [state :hello]
     (let [input (when-not (= :hello state) (read-line)) ]
@@ -116,7 +127,7 @@
                                   (println (str "Was the shape of the flower round? Type 'yes' or 'no'"))
                                   (recur :flower-round))
                 (= input "no") (do
-                                 (println (str "It's hard to determine. Would you like to upload a picture? Type 'yes' or 'no'"))
+                                 (println (str "It's hard to determine. Do you have a picture? Type 'yes' or 'no'"))
                                  (recur :park-bike-yes))
                 :else (do (println "Please answer .........")
                           (recur state)))
@@ -124,7 +135,7 @@
           (cond (= input "yes") (do
                                   (println (str "I can guess it might be flower A or flower B"))
                                   (recur :toimplement))
-                (= input "no") (do (println "Please upload a picture or the path below")
+                (= input "no") (do (identify)
                                    (recur :toimplement))
                 :else (do (println "Please type 'yes' or 'no'")
                           (recur state)))
@@ -158,12 +169,6 @@
           (println (str/upper-case (keys parks-info)))
           (recur state))))))
 
-(defn identify []
-  (println "What do you want identified? You can just drop the image here and I will have a look :)")
-  (def image (read-line))
-  (def image-path (str/trim (str/replace image "'" "")))
-  (print "Great it seems like you saw a:")
-  (ntw/guess_image image-path))
 
 (defn start-bot []
                  "A starting function"
@@ -190,7 +195,7 @@
                            (recur state))
                         (= input "identify")
                           (do
-                            (identify)
+                            (identify_image)
                             (recur state))
 
                         :else (do
