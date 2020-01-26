@@ -95,6 +95,7 @@
          (println "GoodBye!")
          :done)))))
 
+
 (defn identify []
   (println "What do you want identified? You can just drop the image here and I will have a look :)")
   (def image (read-line))
@@ -167,7 +168,6 @@
         (do
           (println (str/upper-case (keys parks-info)))
           (recur state))))))
-
 
 
 (defn start-bot []
