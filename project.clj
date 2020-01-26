@@ -25,7 +25,8 @@
                  [org.hellonico/sizing "0.1.0"]
                  [net.mikera/imagez "0.12.0"]
                  ;;If you need cuda 8...
-                 [org.bytedeco.javacpp-presets/cuda "8.0-1.2"]
+                 [org.bytedeco/cuda "10.2-7.6-1.5.2"]
+                 ;;[org.bytedeco.javacpp-presets/cuda "10.2-1.2"]
                  ;;If you need cuda 7.5...
                  ;;[org.bytedeco.javacpp-presets/cuda "7.5-1.2"]
                  ]
