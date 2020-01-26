@@ -3,6 +3,9 @@
 This small application is developed to give a sample to "Prague municipality" regarding capabilities of chatbot app.
 The demo wants to present basic function of asking the name of the user, asking different questions about the specific requirements for a public park in Prague.
 The chatbot is collecting feedback from the user and offering information about a public park offering a link to the online maps or a small description to reach it.
+
+# Text for image recognition
+
 ## Installation
 
 The chatbot is written in Clojure, a functional programming language running on Java Virtual Machine.
@@ -22,7 +25,7 @@ Depending on your operating system different steps are necessary to install the 
 
 > git clone https://github.com/riccardosl/clojure-chatbot.git  # Clone the github repository, request your Gituhub credentials.
 > cd /clojure-chatbot # Browse the project folder.
-> lein run # Run the chatbot and start interaction.
+> lein run # Run the chatbot and start interaction. End command not implemented yet. Use control-C to quit.
 
 ```
 ## Future development
