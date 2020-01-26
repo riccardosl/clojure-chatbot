@@ -110,7 +110,7 @@
                           (recur state)))
           (= state :flower-yes)
           (cond (= input "yes") (do
-                                  (println (str "Was top of the flower round? Type 'yes' or 'no'"))
+                                  (println (str "Was the shape of the flower round? Type 'yes' or 'no'"))
                                   (recur :flower-round))
                 (= input "no") (do
                                  (println (str "It's hard to determine. Would you like to upload a picture? Type 'yes' or 'no'"))
@@ -123,7 +123,7 @@
                                   (recur :toimplement))
                 (= input "no") (do (println "Please upload a picture or the path below")
                                    (recur :toimplement))
-                :else (do (println "Please answer ...........")
+                :else (do (println "Please type 'yes' or 'no'")
                           (recur state)))
           :else
           (do (println "Unknown state" state)
@@ -166,15 +166,16 @@
   "A starting function"
   (newline)
   (println "Hello, I am your Prague Park Chatbot!")
-                 ;(Thread/sleep 1000)
+  (Thread/sleep 1000)
   (newline)
   (println "I can help you choose a park to visit or give you information regarding a park.")
-                 ;(Thread/sleep 1000)
-  (println "I will also be able to help identify things, but I am still learning to do this")
-                 ;(Thread/sleep 1000)
+  (Thread/sleep 1000)
+  (newline)
+  (println "I will also be able to help identify flowers, but I am still learning to do this")
+  (Thread/sleep 1000)
   (loop [state :start]
     (newline)
-    (println "Would you like help or you need information? I can also help you with identifying a picture.")
+    (println "Please reply with \"help\" or \"information\" or \"identify\". At any time you can exit typing \":done\"")
     (let [input (read-line)]
       (if-not (= input ":done")
         (cond
@@ -189,10 +190,10 @@
             (recur state))
 
           :else (do
-                  (println "Please reply with \"help\" or \"information\" or \"identify\"")
+                  (println "Please reply with \"help\" or \"information\" or \"identify\". At any time you can exit typing \":done\"")
                   (recur state)))
         (do
-          (println "GoodBye!")
+          (println "I'm sorry that you want to go... You can always come back in the future!")
           :done)))))
 
 (defn start-bot1 []
@@ -213,44 +214,8 @@
                 (println "Please reply with \"help\" or \"information\"")
                 (recur state))))))
 
-(def test-phrase
-  [["hello" "hello how can I help?"]
-   ["bye" "see you soon"]
-   ["my name is Peter" "nice to meet you Peter"]
-   ["Yes" "Do you know a parking space?"]])
 
-(def firststep
-  [["yes" "These parks have parking sport: "]
-   ["bye" "see you soon"]
-   ["my name is Peter" "nice to meet you Peter"]])
 
-(defn response-test [input]
-  (or (second (first (filter (fn [[in out]]
-                               (= in input))
-                             test-phrase)))
-      "please say it again"))
-
-(defn response-first [input]
-  (or (second (first (filter (fn [[in out]]
-                               (= in input))
-                             firststep)))
-      "please say it again"))
-
-(def test-phrase2
-  [[#"I'm near (.*)" "Let me search a park near "]
-   [#"hello (.*)" "nice to meet you "]
-   [#"bye (.*)" "see you soon "]])
-
-(defn match-test [in [pattern out]]
-  (when-let [[_ dyn] (re-matches pattern in)]
-    (str out dyn)))
-
-(defn response-test2 [input]
-  (or (some (partial match-test input)
-            test-phrase2)
-      "please repeat"))
-
-;(response-test2 "bye clojure")
 
 
 (defn -main
